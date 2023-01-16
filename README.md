@@ -1,27 +1,27 @@
 # Objekterkennung
 
-##Beschreibung des Projektes
+## Beschreibung des Projektes
 
 Bei dem UAVVaste-Projekt geht es darum, auf Drohnenbildern zu erkennen, ob Müll vorhanden ist oder nicht. Die GPS-Daten der Bilder, auf denen Müll erkannt wurde, können an einen Aufräumroboter geschickt werden, um gegen die Umweltverschmutzung vorzugehen. Dafür wurde das Netz YOLOv5 für die Objekterkennung trainiert und die Ergebnisse der verschiedenen Größen der Netze miteinander verglichen.
 
-##Datensatz
+## Datensatz
 Der verwendete Datensatz ist der UAVVaste-Datensatz, herunterladbar von Github: https://github.com/UAVVaste/UAVVaste. Dabei braucht man nur den annotations-Ordner, den man in einen config-Ordner legt. Dabei kümmert sich setup.py um das Herunterladen der Bilder und die Erstellung der Labels im für YOLOv5 benötigten Format. Das benötigte Format ist dabei in eine Text-Datei zu schreiben, in der die Klasse (hier immer 0, da nur eine Klasse) und die normalisierten x- und y-Koordinaten der Bounding Box sowie die normalisierte Breite und Höhe in dieser Rei-henfolge stehen. Dabei wird dies für jede Bounding Box des Bildes in einer neuen Zeile angegeben. Die entstehende Struktur der Ordner sieht folgendermaßen aus: -data --images ---test ---val ---train --labels ---test ---val ---train. 
 
-##Beschreibung des Netzes YOLOv5
+## Beschreibung des Netzes YOLOv5
 
-###Model Backbone
+### Model Backbone
 Der Backbone eines Modells ist ein vortrainiertes Netzwerk, dass für die Extrahierung der reichhaltigen Merkmale benutzt wird. Dies hilft, die räumliche Resolution des Bildes zu verringern und seine Merkmalsresolution, also die Resolution der Kanäle zu erhöhen. YOLOv5 benutzt CSP-Darknet53, wobei CSP für Cross Stage Partial steht, dessen Strategie auf das Darknet53 angewandt wurde. Das durch die Benutzung von Residual- und Dense-Blöcken, die das Problem der verschwindenden Gradienten beheben sollen, entstehende Problem der redundanten Gradienten wird durch die Abschneidung des Gradientenflusses behoben. Dabei wird die Merkmalskarte der Basisschicht in zwei Tei-le aufgeteilt und dann durch eine stufenübergreifende Hierarchie wieder zusammenge-führt. Vorteile davon sind, dass die Anzahl der Parameter und der Berechnungen ver-ringert werden, was sich positiv auf die Inferenzzeit auswirkt.
 
-###Model Neck
+### Model Neck
 Der Nacken des Modells wird benutzt, um Merkmalspyramiden zu extrahieren. Dies hilft dem Modell, Objekte auf verschiedenen Größen und Skalierungen gut zu generali-sieren. Als Nacken wird von YOLOv5 ein durch die Integration von BottleNeckCSP modifiziertes PANet benutzt. Dieses ist ein Merkmalspyramidennetzwerk, welches auch in YOLOv4 für die Verbesserung des Informationsflusses und der Lokalisierung zum Einsatz kam. Auch darauf wurde die Strategie von CSP angewandt. Außerdem kommt hier auch SPPF zum Einsatz. Ein SSP-Block führt eine Aggregation auf seiner Eingabe durch und gibt eine Ausgabe fester Größe zurück. Daher kann es das rezeptive Feld signifikant erhöhen und die relevantesten Kontextmerkmale segregieren, ohne die Ge-schwindigkeit des Netzwerks zu beeinträchtigen. Dies wurde schon in YOLOv3 und YOLOv4 verwendet, allerdings mit SPP anstatt SPPF-Block.
 
-###Model Head
+### Model Head
 Der Kopf des Modells wird verwendet, um die finalen Operationen auszuführen. An-kerboxen werden auf die Merkmalskarten angewandt und als finale Ausgabe die Klas-sen, die Objektpunktzahlen und die Bounding Boxes berechnet. YOLOv5 benutzt den selben Kopf wie YOLOv3 und YOLOv4, welcher aus drei Convolutional-Schichten besteht, die den Ort der Bounding Boxes, die Objektpunktzahlen und –klassen vorher-sagen. Allerdings haben sich die Formeln für die Berechnung der Zielkoordinaten geän-dert.
 
-###Versionen des Netzes
+### Versionen des Netzes
 YOLOv5 gibt es in fünf Versionen, nämlich vom kleinsten bis größten n, s, m, l und x. Diese unterscheiden sich bezüglich der Schnelligkeit und Präzision, aber auch bezüglich der Komplexität.
 
-##Ergebnisse
+## Ergebnisse
 Ich habe alle Netzgrößen auf dieselben Daten für 300 Epochen trainiert. Dabei konnte man die Auswirkung der verschiedenen Größe der Netze auf das Trainingsergebnis gut betrachten. Folgender Tabelle ist das Ergebnis der Modelle der verschiedenen Netzgrö-ßen auf dem Validierungsdatensatz zu entnehmen. Evaluiert wurden immer die besten Gewichte. Die Angaben in der Tabelle sind in Prozent.
 
 ![Tabelle](images/TABELLE3.PNG)
