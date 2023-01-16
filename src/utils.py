@@ -56,7 +56,7 @@ def process_data(dataloader):
             #    os.path.join(img_path, datapoint.image.file_name),
             #    os.path.join(img_path, mode, datapoint.image.file_name)
             #)
-            
+    #Verarbeite je den Trainings-, Test- und Validierungsdatensatz       
     process_mode(train, 'train')
     process_mode(val, 'val')
     process_mode(test, 'test')
