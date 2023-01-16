@@ -1,0 +1,7 @@
+path: ../YOLO/data
+train: images/train
+val: images/validation
+test: images/test
+nc: 1
+names: 
+    0: rubbish
