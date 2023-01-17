@@ -21,6 +21,9 @@ Der Kopf des Modells wird verwendet, um die finalen Operationen auszuführen. An
 ### Versionen des Netzes
 YOLOv5 gibt es in fünf Versionen, nämlich vom kleinsten bis größten n, s, m, l und x. Diese unterscheiden sich bezüglich der Schnelligkeit und Präzision, aber auch bezüglich der Komplexität.
 
+## Anwendung
+Setup.py kümmert sich um die Kreierung der Labels und das Herungerladen der Daten. Dafür benötigt man den annotations-Ordner des UAVVaste-Projekts. Außerdem gilt es, YOLOv5 von der offiziellen Github-Seite herunterzuladen (https://github.com/ultralytics/yolov5) und rubbish.yaml dort einzufügen. Das Training oder die Evaluierung startet man mit den dafür vorgesehenen Befehlen (python train.py oder val.py oder detect.py). Als Argumente muss man die Gewichte (falls man von einem vortrainierten Modell starten möchte), den Pfad zu der .yaml-Datei, die gewünschte Modellversion, und ggf. die Anzahl der Epochen, der Batch-größe (ich habe hierfür 8 benutzt) und der Bildgröße übergeben. Außerdem habe ich die Anzahl der Worker auf 0 gesetzt. 
+
 ## Ergebnisse
 Ich habe alle Netzgrößen auf dieselben Daten für 300 Epochen trainiert. Dabei konnte man die Auswirkung der verschiedenen Größe der Netze auf das Trainingsergebnis gut betrachten. Folgender Tabelle ist das Ergebnis der Modelle der verschiedenen Netzgrö-ßen auf dem Validierungsdatensatz zu entnehmen. Evaluiert wurden immer die besten Gewichte. Die Angaben in der Tabelle sind in Prozent.
 
